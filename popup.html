@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Negentropy</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <span class="logo-icon">❄️</span>
+        <span class="logo-text">Negentropy</span>
+      </div>
+      <div class="header-actions">
+        <button id="lang-btn" class="icon-btn lang-btn" title="Switch language">中文</button>
+        <button id="settings-btn" class="icon-btn">⚙</button>
+      </div>
+    </div>
+
+    <!-- Anchor -->
+    <div class="section anchor-section">
+      <label class="section-label" id="lbl-anchor">Today's Anchor</label>
+      <div class="anchor-input-row">
+        <input type="text" id="anchor-input" placeholder="e.g. Write paper chapter 3" maxlength="50">
+        <button id="anchor-set-btn" class="btn-primary">Set</button>
+      </div>
+    </div>
+
+    <!-- Mode -->
+    <div class="section mode-section">
+      <label class="section-label" id="lbl-mode">Mode</label>
+      <div class="mode-buttons">
+        <button class="mode-btn active" data-mode="focus">
+          <span class="mode-icon">🎯</span>
+          <span class="mode-name" id="mode-name-focus">Focus</span>
+        </button>
+        <button class="mode-btn" data-mode="divergent">
+          <span class="mode-icon">🌊</span>
+          <span class="mode-name" id="mode-name-divergent">Divergent</span>
+        </button>
+        <button class="mode-btn" data-mode="manual">
+          <span class="mode-icon">📊</span>
+          <span class="mode-name" id="mode-name-manual">Manual</span>
+        </button>
+      </div>
+      <div class="mode-desc" id="mode-desc"></div>
+    </div>
+
+    <!-- Thermometer -->
+    <div class="section thermometer-section">
+      <label class="section-label" id="lbl-entropy">Attention Entropy</label>
+      <div class="thermometer-container">
+        <div class="thermometer-bar">
+          <div class="thermometer-gradient"></div>
+          <div class="thermometer-indicator" id="thermometer-indicator"></div>
+        </div>
+        <div class="thermometer-labels">
+          <span class="label-low" id="lbl-focus">❄️ Focus</span>
+          <span class="label-high" id="lbl-roam">🔥 Roam</span>
+        </div>
+      </div>
+      <div class="thermometer-value" id="d-value">D = 0.00</div>
+      <div class="thermometer-zone" id="d-zone">Waiting for data...</div>
+    </div>
+
+    <!-- Entropy Chart -->
+    <div class="section chart-section">
+      <label class="section-label" id="lbl-chart">Entropy Timeline (last 1h)</label>
+      <div class="chart-container">
+        <svg id="entropy-chart" width="100%" height="80" viewBox="0 0 340 80" preserveAspectRatio="none">
+          <line x1="0" y1="20" x2="340" y2="20" stroke="#30363d" stroke-width="0.5" stroke-dasharray="2,3"/>
+          <line x1="0" y1="40" x2="340" y2="40" stroke="#30363d" stroke-width="0.5" stroke-dasharray="2,3"/>
+          <line x1="0" y1="60" x2="340" y2="60" stroke="#30363d" stroke-width="0.5" stroke-dasharray="2,3"/>
+          <line x1="0" y1="37" x2="340" y2="37" stroke="#f85149" stroke-width="0.8" stroke-dasharray="4,3" opacity="0.5"/>
+          <path id="chart-d-path" fill="none" stroke="#58a6ff" stroke-width="1.5" />
+          <path id="chart-htext-path" fill="none" stroke="#bc8cff" stroke-width="1" opacity="0.6"/>
+          <path id="chart-hrate-path" fill="none" stroke="#f85149" stroke-width="1" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#58a6ff"></span><span id="legend-d">D Distraction</span></span>
+        <span class="legend-item"><span class="legend-dot" style="background:#bc8cff"></span>H_text</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#f85149"></span>H_rate</span>
+      </div>
+    </div>
+
+    <!-- Metrics -->
+    <div class="section metrics-section">
+      <label class="section-label" id="lbl-metrics">Real-time</label>
+      <div class="metric-row">
+        <span class="metric-label">H<sub>text</sub></span>
+        <div class="metric-bar-container"><div class="metric-bar" id="h-text-bar" style="background:#bc8cff"></div></div>
+        <span class="metric-value" id="h-text-value">0.0</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">R</span>
+        <div class="metric-bar-container"><div class="metric-bar" id="r-bar" style="background:#d29922"></div></div>
+        <span class="metric-value" id="r-value">0.0</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">H<sub>rate</sub></span>
+        <div class="metric-bar-container"><div class="metric-bar" id="h-rate-bar" style="background:#f85149"></div></div>
+        <span class="metric-value" id="h-rate-value">0.00</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">G</span>
+        <div class="metric-bar-container"><div class="metric-bar" id="g-bar" style="background:#3fb950"></div></div>
+        <span class="metric-value" id="g-value">0%</span>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="section stats-section">
+      <label class="section-label" id="lbl-stats">Today</label>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-value" id="focus-time">0h 0m</span>
+          <span class="stat-label" id="stat-label-focus">Focus</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="roam-time">0h 0m</span>
+          <span class="stat-label" id="stat-label-roam">Roam</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="focus-ratio">0%</span>
+          <span class="stat-label" id="stat-label-ratio">Focus %</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="max-streak">0m</span>
+          <span class="stat-label" id="stat-label-streak">Max Streak</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current -->
+    <div class="section current-section">
+      <div class="current-domain">
+        <span class="current-label" id="lbl-current">Current:</span>
+        <span id="current-domain" class="domain-text">--</span>
+        <span id="current-category" class="category-badge">--</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-text" id="footer-text">Feed on negentropy, starve the noise.</span>
+    </div>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

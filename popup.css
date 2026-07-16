@@ -1,0 +1,172 @@
+/* ═══ Negentropy Popup Styles ═══ */
+:root {
+  --bg: #0d1117;
+  --bg-card: #161b22;
+  --bg-hover: #1f2630;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-muted: #7d8590;
+  --text-dim: #484f58;
+  --blue: #58a6ff;
+  --green: #3fb950;
+  --yellow: #d29922;
+  --red: #f85149;
+  --purple: #bc8cff;
+  --radius: 8px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 380px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  overflow-x: hidden;
+}
+
+#app { padding: 12px; }
+
+/* Header */
+.header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.logo { display: flex; align-items: center; gap: 6px; }
+.logo-icon { font-size: 18px; }
+.logo-text { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+.icon-btn {
+  background: none; border: none; color: var(--text-muted);
+  font-size: 16px; cursor: pointer; padding: 4px; border-radius: 4px;
+}
+.icon-btn:hover { background: var(--bg-hover); color: var(--text); }
+.lang-btn {
+  font-size: 11px; font-weight: 600; padding: 2px 8px;
+  border: 1px solid var(--border); border-radius: 4px;
+  margin-right: 4px; min-width: 36px;
+}
+.header-actions { display: flex; align-items: center; }
+
+/* Sections */
+.section {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 10px 12px; margin-bottom: 8px;
+}
+.section-label {
+  display: block; font-size: 11px; color: var(--text-muted);
+  margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* Anchor */
+.anchor-input-row { display: flex; gap: 6px; }
+#anchor-input {
+  flex: 1; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 6px 10px; color: var(--text);
+  font-size: 13px; outline: none;
+}
+#anchor-input:focus { border-color: var(--blue); }
+#anchor-input::placeholder { color: var(--text-dim); }
+.btn-primary {
+  background: var(--blue); color: #fff; border: none; border-radius: 6px;
+  padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;
+}
+.btn-primary:hover { opacity: 0.9; }
+
+/* Mode */
+.mode-buttons { display: flex; gap: 4px; margin-bottom: 6px; }
+.mode-btn {
+  flex: 1; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 8px 4px; color: var(--text-muted);
+  font-size: 11px; cursor: pointer; transition: all 0.15s;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.mode-btn:hover { border-color: var(--text-muted); color: var(--text); }
+.mode-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; font-weight: 600; }
+.mode-btn.active.divergent { background: var(--purple); border-color: var(--purple); }
+.mode-btn.active.manual { background: var(--text-muted); border-color: var(--text-muted); }
+.mode-icon { font-size: 14px; }
+.mode-name { font-size: 10px; }
+.mode-desc {
+  font-size: 10px; color: var(--text-muted); text-align: center;
+  padding: 2px 4px; border-radius: 4px; background: var(--bg);
+}
+
+/* Thermometer */
+.thermometer-container { margin: 8px 0; }
+.thermometer-bar { position: relative; height: 12px; border-radius: 6px; overflow: visible; margin-bottom: 4px; }
+.thermometer-gradient {
+  position: absolute; inset: 0; border-radius: 6px;
+  background: linear-gradient(90deg, #58a6ff 0%, #3fb950 25%, #d29922 60%, #f85149 100%);
+  opacity: 0.3;
+}
+.thermometer-indicator {
+  position: absolute; top: -3px; width: 4px; height: 18px;
+  background: var(--text); border-radius: 2px; transition: left 0.5s ease;
+  left: 0%; box-shadow: 0 0 4px rgba(255,255,255,0.5);
+}
+.thermometer-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); }
+.thermometer-value {
+  text-align: center; font-size: 22px; font-weight: 700;
+  margin: 6px 0 2px; font-variant-numeric: tabular-nums;
+}
+.thermometer-zone { text-align: center; font-size: 12px; color: var(--text-muted); }
+.thermometer-zone.focus { color: var(--blue); }
+.thermometer-zone.alert { color: var(--yellow); }
+.thermometer-zone.roam { color: var(--red); }
+
+/* Chart */
+.chart-section { padding: 10px 12px; }
+.chart-container {
+  background: var(--bg); border-radius: 4px; padding: 4px;
+  border: 1px solid var(--border);
+}
+.chart-legend {
+  display: flex; gap: 12px; justify-content: center; margin-top: 6px;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 10px; color: var(--text-muted);
+}
+.legend-dot {
+  width: 8px; height: 8px; border-radius: 2px; display: inline-block;
+}
+
+/* Metrics */
+.metric-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.metric-row:last-child { margin-bottom: 0; }
+.metric-label { width: 50px; font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+.metric-bar-container {
+  flex: 1; height: 6px; background: var(--bg);
+  border-radius: 3px; overflow: hidden;
+}
+.metric-bar { height: 100%; border-radius: 3px; transition: width 0.5s ease; width: 0%; }
+.metric-value {
+  width: 50px; text-align: right; font-size: 11px;
+  font-variant-numeric: tabular-nums; color: var(--text);
+}
+
+/* Stats */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
+.stat-item { text-align: center; }
+.stat-value { display: block; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat-label { display: block; font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+/* Current */
+.current-section { padding: 8px 12px; }
+.current-domain { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.current-label { color: var(--text-muted); }
+.domain-text {
+  color: var(--text); font-weight: 500;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px;
+}
+.category-badge { font-size: 10px; padding: 1px 6px; border-radius: 10px; font-weight: 600; }
+.category-badge.S1 { background: rgba(63,185,80,0.2); color: var(--green); }
+.category-badge.S2 { background: rgba(210,153,34,0.2); color: var(--yellow); }
+.category-badge.S3 { background: rgba(248,81,73,0.2); color: var(--red); }
+.category-badge.S4 { background: rgba(125,133,144,0.2); color: var(--text-muted); }
+
+/* Footer */
+.footer { text-align: center; padding: 8px 0 4px; }
+.footer-text { font-size: 10px; color: var(--text-dim); font-style: italic; }
