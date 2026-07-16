@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Negentropy — Feed on negentropy, starve the noise.</title>
+  <meta name="description" content="A thermodynamic approach to attention management. Measure the entropy of your digital mind with a Chrome extension.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0d1117; --bg2: #161b22; --border: #30363d;
+      --text: #e6edf3; --muted: #7d8590;
+      --blue: #58a6ff; --green: #3fb950; --yellow: #d29922; --red: #f85149; --purple: #bc8cff;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden;
+    }
+    .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .hero {
+      text-align: center; padding: 100px 24px 80px;
+      background: radial-gradient(ellipse at center top, rgba(88,166,255,0.08), transparent 60%);
+    }
+    .hero-icon { font-size: 64px; margin-bottom: 16px; }
+    .hero h1 {
+      font-size: 48px; font-weight: 800; letter-spacing: -1px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #58a6ff, #bc8cff, #f85149);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p { font-size: 20px; color: var(--muted); max-width: 560px; margin: 0 auto 32px; }
+    .cta-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .cta {
+      display: inline-block; padding: 14px 32px; border-radius: 8px;
+      font-size: 16px; font-weight: 600; text-decoration: none; transition: all 0.2s;
+    }
+    .cta-primary { background: var(--blue); color: #fff; }
+    .cta-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .cta-secondary { border: 1px solid var(--border); color: var(--text); }
+    .cta-secondary:hover { border-color: var(--muted); }
+
+    /* Thermometer visual */
+    .thermometer-demo {
+      max-width: 400px; margin: 48px auto 0;
+      padding: 24px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+    }
+    .thermometer-bar {
+      height: 12px; border-radius: 6px; position: relative; margin-bottom: 8px;
+      background: linear-gradient(90deg, #58a6ff 0%, #3fb950 25%, #d29922 60%, #f85149 100%);
+      opacity: 0.4;
+    }
+    .thermometer-dot {
+      position: absolute; top: -3px; width: 4px; height: 18px; border-radius: 2px;
+      background: #fff; left: 15%; box-shadow: 0 0 8px rgba(255,255,255,0.6);
+      animation: dotPulse 4s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%, 100% { left: 15%; }
+      50% { left: 75%; }
+    }
+    .thermometer-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+    .thermometer-value { text-align: center; font-size: 28px; font-weight: 700; margin: 8px 0; }
+
+    /* Section */
+    .section { padding: 64px 0; border-top: 1px solid var(--border); }
+    .section h2 { font-size: 32px; font-weight: 700; margin-bottom: 24px; text-align: center; }
+    .section h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+
+    /* How it works */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    .step { text-align: center; padding: 24px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; }
+    .step-icon { font-size: 36px; margin-bottom: 12px; }
+    .step p { font-size: 14px; color: var(--muted); }
+
+    /* Metrics */
+    .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 32px; }
+    .metric-card { padding: 20px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; }
+    .metric-card .formula { font-family: 'Courier New', monospace; color: var(--blue); font-size: 13px; margin: 8px 0; }
+    .metric-card p { font-size: 14px; color: var(--muted); }
+
+    /* Science */
+    .science {
+      padding: 64px 24px; text-align: center;
+      background: linear-gradient(180deg, transparent, rgba(188,140,255,0.05), transparent);
+    }
+    .quote {
+      font-size: 24px; font-style: italic; max-width: 600px; margin: 0 auto 16px;
+      color: var(--purple); line-height: 1.5;
+    }
+    .quote-author { font-size: 14px; color: var(--muted); }
+
+    /* Privacy */
+    .privacy-banner {
+      text-align: center; padding: 48px 24px;
+      background: rgba(63,185,80,0.05); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .privacy-banner h2 { margin-bottom: 16px; }
+    .privacy-banner p { color: var(--muted); max-width: 500px; margin: 0 auto; }
+
+    /* Footer */
+    .footer { text-align: center; padding: 32px 24px; color: var(--muted); font-size: 14px; }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 32px; }
+      .steps { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-icon">❄️</div>
+    <h1>Negentropy</h1>
+    <p>Feed on negentropy, starve the noise.<br>A thermodynamic approach to attention management.</p>
+    <div class="cta-group">
+      <a href="https://github.com/happyScpencerXu/negentropy/releases/download/v1.0.0/negentropy-v1.0.0.zip" class="cta cta-primary">⬇ Download — Free</a>
+      <a href="#" class="cta cta-secondary">Read the paper →</a>
+    </div>
+
+    <!-- Thermometer demo -->
+    <div class="thermometer-demo">
+      <div class="thermometer-bar">
+        <div class="thermometer-dot"></div>
+      </div>
+      <div class="thermometer-labels">
+        <span>❄️ Focus</span>
+        <span>🔥 Roam</span>
+      </div>
+      <div class="thermometer-value">D = 0.28</div>
+      <p style="text-align:center; color:var(--muted); font-size:12px;">Your attention, measured.</p>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="section">
+    <div class="container">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-icon">📏</div>
+          <h3>Measure</h3>
+          <p>Five information-theoretic entropy metrics run silently in your browser, quantifying the information density, flow rate, and navigation randomness of your browsing.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">📊</div>
+          <h3>Visualize</h3>
+          <p>A floating overlay shows your real-time entropy thermometer. A timeline chart reveals when and how your attention drifts from focus to noise.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">🎯</div>
+          <h3>Optimize</h3>
+          <p>Set your daily anchor. Get gentle alerts when your distraction index stays high. Review patterns. Inject negentropy back into your system.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metrics -->
+  <div class="section">
+    <div class="container">
+      <h2>Five entropy metrics</h2>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <h3>H<sub>text</sub> — Content Entropy</h3>
+          <div class="formula">H = −Σ p<sub>i</sub> log₂ p<sub>i</sub></div>
+          <p>Shannon entropy of page text word frequencies. High-entropy pages have unpredictable, fragmented content.</p>
+        </div>
+        <div class="metric-card">
+          <h3>R — Information Flow Rate</h3>
+          <div class="formula">R = ΔH / Δt</div>
+          <p>Rate of new content emergence. Short video feeds have extremely high R; deep articles have near-zero R.</p>
+        </div>
+        <div class="metric-card">
+          <h3>H<sub>rate</sub> — Transition Entropy</h3>
+          <div class="formula">H = −Σ π<sub>i</sub> P<sub>ij</sub> log₂ P<sub>ij</sub></div>
+          <p>Markov chain entropy rate of your navigation sequence. Random jumping between sites = high entropy rate.</p>
+        </div>
+        <div class="metric-card">
+          <h3>G — Goal Relevance</h3>
+          <div class="formula">G ∈ [0, 1]</div>
+          <p>How related is the current page to your daily anchor? High G means even high-entropy pages are productive.</p>
+        </div>
+        <div class="metric-card" style="grid-column: span 2;">
+          <h3>D — Distraction Index</h3>
+          <div class="formula">D = H<sub>rate</sub> × (1 − G) × f(switches)</div>
+          <p>The composite metric. Combines navigation randomness, goal irrelevance, and tab-switching frequency into a single real-time distraction score.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Science -->
+  <div class="science">
+    <div class="container">
+      <p class="quote">"Life feeds on negative entropy."</p>
+      <p class="quote-author">— Erwin Schrödinger, "What is Life?" (1944)</p>
+      <p style="max-width: 560px; margin: 32px auto 0; color: var(--muted);">
+        Your attention is a thermodynamic system. Focus is low entropy — ordered, predictable, goal-directed.
+        Mind-wandering is high entropy — disordered, random, dissipative. Negentropy gives you the instruments to measure
+        and manage this process.
+      </p>
+    </div>
+  </div>
+
+  <!-- Privacy -->
+  <div class="privacy-banner">
+    <h2>🔒 100% Local. Zero tracking.</h2>
+    <p>All computation happens in your browser. No cloud, no sync, no analytics, no external API calls. Your entropy data never leaves your device.</p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Negentropy v1.0.0 — Open source · MIT License</p>
+    <p style="margin-top:8px; font-style: italic;">Feed on negentropy, starve the noise.</p>
+  </div>
+
+  <!-- Install Guide -->
+  <div class="section" id="install">
+    <div class="container">
+      <h2>Install</h2>
+      <div style="display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 32px;">
+        <div style="padding: 24px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;">
+          <h3 style="color: var(--green);">🌐 Google Chrome / Edge</h3>
+          <p style="color: var(--muted); font-size: 14px; margin: 8px 0 16px;">Load unpacked (developer mode, 30 seconds)</p>
+          <a href="https://github.com/happyScpencerXu/negentropy/releases/download/v1.0.0/negentropy-v1.0.0.zip" class="cta cta-primary" style="font-size: 14px;">⬇ Download .zip</a>
+        </div>
+      </div>
+      <div style="margin-top: 24px; padding: 20px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;">
+        <h3 style="font-size: 16px; margin-bottom: 12px;">Install steps:</h3>
+        <ol style="color: var(--muted); font-size: 14px; padding-left: 20px; line-height: 2;">
+          <li>Download <code style="color: var(--blue);">negentropy-v1.0.0.zip</code> and unzip it</li>
+          <li>Open <code style="color: var(--blue);">chrome://extensions/</code> in Chrome</li>
+          <li>Enable <strong style="color: var(--text);">Developer mode</strong> (top right toggle)</li>
+          <li>Click <strong style="color: var(--text);">Load unpacked</strong> → select the unzipped folder</li>
+          <li>Done! The ❄️ icon appears in your toolbar</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
