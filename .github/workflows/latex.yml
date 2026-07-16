@@ -20,8 +20,8 @@ jobs:
         with:
           root_file: main.tex
           working_directory: paper
-          compiler: pdflatex
-          args: -interaction=nonstopmode -halt-on-error
+          compiler: latexmk
+          args: -pdf -interaction=nonstopmode -halt-on-error
 
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
