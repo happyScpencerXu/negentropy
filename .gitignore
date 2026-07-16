@@ -2,3 +2,5 @@
 *.zip
 node_modules/
 .env
+Negentropy_设计方案*.md
+STORE_LISTING.md
